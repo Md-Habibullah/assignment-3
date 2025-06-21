@@ -34,6 +34,209 @@ A RESTful API for managing books and borrowings, built with Express, TypeScript,
 | POST   | `/api/borrow`     | Borrow book copies                   |
 | GET    | `/api/borrow`     | Get borrowing summary (aggregation)  |
 
+
+Request/Response Examples
+#### 1. Create a Book
+**Request:**
+```http
+POST /api/books
+```
+Content-Type: application/json
+
+{
+  "title": "The Hobbit",
+  "author": "J.R.R. Tolkien",
+  "genre": "FANTASY",
+  "isbn": "9780547928227",
+  "description": "A fantasy adventure novel",
+  "copies": 15
+}
+```
+```json
+{
+  "success": true,
+  "message": "Book created successfully",
+  "data": {
+    "_id": "64f123abc4567890def12345",
+    "title": "The Hobbit",
+    "author": "J.R.R. Tolkien",
+    "genre": "FANTASY",
+    "isbn": "9780547928227",
+    "description": "A fantasy adventure novel",
+    "copies": 15,
+    "available": true,
+    "createdAt": "2025-06-20T10:00:00.000Z",
+    "updatedAt": "2025-06-20T10:00:00.000Z"
+  }
+}
+```
+2. Get All Books
+Request:
+
+```http
+GET /api/books?genre=FANTASY&sort=desc&limit=5
+```
+Success Response:
+
+```json
+{
+  "success": true,
+  "message": "Books retrieved successfully",
+  "data": [
+    {
+      "_id": "64f123abc4567890def12345",
+      "title": "The Hobbit",
+      "author": "J.R.R. Tolkien",
+      "genre": "FANTASY",
+      "isbn": "9780547928227",
+      "copies": 15,
+      "available": true,
+      "createdAt": "2025-06-20T10:00:00.000Z"
+    }
+  ]
+}
+```
+3. Get Single Book
+Request:
+
+```http
+GET /api/books/64f123abc4567890def12345
+```
+Success Response:
+
+```json
+{
+  "success": true,
+  "message": "Book retrieved successfully",
+  "data": {
+    "_id": "64f123abc4567890def12345",
+    "title": "The Hobbit",
+    "author": "J.R.R. Tolkien",
+    "genre": "FANTASY",
+    "isbn": "9780547928227",
+    "copies": 15,
+    "available": true
+  }
+}
+```
+4. Update Book
+Request:
+
+```http
+PUT /api/books/64f123abc4567890def12345
+```
+Content-Type: application/json
+```json
+{
+  "copies": 20
+}
+```
+Success Response:
+
+```json
+{
+  "success": true,
+  "message": "Book updated successfully",
+  "data": {
+    "_id": "64f123abc4567890def12345",
+    "copies": 20,
+    "available": true,
+    "updatedAt": "2025-06-20T11:30:00.000Z"
+  }
+}
+```
+
+5. Delete Book
+Request:
+```http
+DELETE /api/books/64f123abc4567890def12345
+```
+Success Response:
+
+```json
+{
+  "success": true,
+  "message": "Book deleted successfully",
+  "data": null
+}
+```
+Borrow Endpoints
+6. Borrow a Book
+Request:
+
+```http
+POST /api/borrow
+```
+Content-Type: application/json
+
+```json
+{
+  "book": "64f123abc4567890def12345",
+  "quantity": 2,
+  "dueDate": "2025-12-31"
+}
+```
+Success Response:
+
+```json
+{
+  "success": true,
+  "message": "Book borrowed successfully",
+  "data": {
+    "_id": "64bc4a0f9e1c2d3f4b5a6789",
+    "book": "64f123abc4567890def12345",
+    "quantity": 2,
+    "dueDate": "2025-12-31T00:00:00.000Z",
+    "createdAt": "2025-06-20T12:00:00.000Z"
+  }
+}
+```
+7. Get Borrowed Books Summary
+Request:
+
+```http
+GET /api/borrow
+```
+Success Response:
+
+```json
+{
+  "success": true,
+  "message": "Borrowed books summary retrieved successfully",
+  "data": [
+    {
+      "book": {
+        "title": "The Hobbit",
+        "isbn": "9780547928227"
+      },
+      "totalQuantity": 5
+    }
+  ]
+}
+```
+
+Error Responses
+Validation Error:
+
+```json
+{
+  "message": "Validation failed",
+  "success": false,
+  "error": {
+    "copies": "Copies must be a positive number"
+  }
+}
+```
+Not Found Error:
+
+```json
+{
+  "message": "Book not found",
+  "success": false,
+  "error": "No book found with ID 64f123abc4567890def12345"
+}
+```
+
 ## Getting Started
 
 ### Prerequisites
