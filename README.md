@@ -67,7 +67,7 @@ Example Requests
 Create a Book:
 
 ```bash
-curl -X POST http://localhost:3000/api/books \
+curl -X POST http://localhost:5000/api/books \
   -H "Content-Type: application/json" \
   -d '{
     "title": "The Great Gatsby",
@@ -80,7 +80,7 @@ curl -X POST http://localhost:3000/api/books \
   Borrow Books:
 
 ```bash
-curl -X POST http://localhost:3000/api/borrow \
+curl -X POST http://localhost:5000/api/borrow \
   -H "Content-Type: application/json" \
   -d '{
     "book": "64f123abc4567890def12345",
