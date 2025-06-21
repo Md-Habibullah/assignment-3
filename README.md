@@ -94,22 +94,3 @@ Run the test suite with:
 ```bash
 npm test
 ```
-
-License
-This project is licensed under the MIT License.
-
-```text
-
-This README includes:
-1. Clear project description
-2. Key features
-3. Technology stack
-4. API endpoint documentation
-5. Setup instructions
-6. Environment configuration
-7. Example requests
-8. Testing information
-9. License
-
-You can copy this directly into your `README.md` file. Just replace the GitHub URL with your actual repository link.
-```
