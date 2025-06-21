@@ -65,11 +65,12 @@ borrowRoutes.get('/', async (req: Request, res: Response) => {
 
             {
                 $project: {
-                    totalQuantity: 1,
+                    _id: 0,
                     book: {
                         title: '$bookInfo.title',
                         isbn: '$bookInfo.isbn'
-                    }
+                    },
+                    totalBookCount: 1
                 }
             }
         ])
