@@ -35,14 +35,16 @@ A RESTful API for managing books and borrowings, built with Express, TypeScript,
 | GET    | `/api/borrow`     | Get borrowing summary (aggregation)  |
 
 
-Request/Response Examples
+### Request/Response Examples
 #### 1. Create a Book
 **Request:**
+
 ```http
 POST /api/books
 ```
-Content-Type: application/json
+### Content-Type: application/json
 
+```json
 {
   "title": "The Hobbit",
   "author": "J.R.R. Tolkien",
@@ -52,6 +54,7 @@ Content-Type: application/json
   "copies": 15
 }
 ```
+
 ```json
 {
   "success": true,
@@ -70,7 +73,7 @@ Content-Type: application/json
   }
 }
 ```
-2. Get All Books
+### 2. Get All Books
 Request:
 
 ```http
@@ -96,7 +99,7 @@ Success Response:
   ]
 }
 ```
-3. Get Single Book
+### 3. Get Single Book
 Request:
 
 ```http
@@ -119,7 +122,7 @@ Success Response:
   }
 }
 ```
-4. Update Book
+### 4. Update Book
 Request:
 
 ```http
@@ -146,7 +149,7 @@ Success Response:
 }
 ```
 
-5. Delete Book
+### 5. Delete Book
 Request:
 ```http
 DELETE /api/books/64f123abc4567890def12345
@@ -160,8 +163,8 @@ Success Response:
   "data": null
 }
 ```
-Borrow Endpoints
-6. Borrow a Book
+## Borrow Endpoints
+### 6. Borrow a Book
 Request:
 
 ```http
@@ -191,7 +194,7 @@ Success Response:
   }
 }
 ```
-7. Get Borrowed Books Summary
+### 7. Get Borrowed Books Summary
 Request:
 
 ```http
@@ -215,7 +218,7 @@ Success Response:
 }
 ```
 
-Error Responses
+## Error Responses
 Validation Error:
 
 ```json
