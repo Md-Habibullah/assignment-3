@@ -1,5 +1,6 @@
 import { Model, model, Schema } from "mongoose";
 import { bookStaticMethod, IBook } from "../interfaces/book.interface";
+import Borrow from "./borrow.model";
 
 const bookSchema = new Schema<IBook, bookStaticMethod>({
     title: {
@@ -43,6 +44,13 @@ bookSchema.static('updateAvailability', async function (bookId: string) {
         await book.save();
     }
 });
+
+bookSchema.post('findOneAndDelete', async function (doc) {
+    if (doc) {
+        await Borrow.deleteMany({ book: doc._id })
+        console.log(`Deleted all borrows for book ${doc.title}`)
+    }
+})
 
 const Book = model<IBook, bookStaticMethod>('Book', bookSchema);
 

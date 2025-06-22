@@ -8,8 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
+const borrow_model_1 = __importDefault(require("./borrow.model"));
 const bookSchema = new mongoose_1.Schema({
     title: {
         type: String,
@@ -50,6 +54,14 @@ bookSchema.static('updateAvailability', function (bookId) {
         if (book) {
             book.available = book.copies > 0 ? true : false;
             yield book.save();
+        }
+    });
+});
+bookSchema.post('findOneAndDelete', function (doc) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (doc) {
+            yield borrow_model_1.default.deleteMany({ book: doc._id });
+            console.log(`Deleted all borrows for book ${doc.title}`);
         }
     });
 });

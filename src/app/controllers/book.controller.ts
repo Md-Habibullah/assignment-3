@@ -12,10 +12,10 @@ bookRoutes.post('/', async (req: Request, res: Response) => {
             message: 'Book created successfully',
             data: book
         });
-    } catch (error) {
+    } catch (error: any) {
         res.status(400).json({
             success: false,
-            message: 'somthing went wrong',
+            message: error.message,
             error
         });
     }
@@ -50,10 +50,10 @@ bookRoutes.get('/', async (req: Request, res: Response) => {
             data: books
         });
 
-    } catch (error) {
+    } catch (error: any) {
         res.status(500).json({
             success: false,
-            message: 'Something went wrong',
+            message: error.message,
             error
         });
     }
@@ -70,10 +70,10 @@ bookRoutes.get('/:bookId', async (req: Request, res: Response) => {
             message: 'Book retrieved successfully',
             data: book
         });
-    } catch (error) {
-        res.status(500).json({
+    } catch (error: any) {
+        res.status(400).json({
             success: false,
-            message: 'Something went wrong',
+            message: error.message,
             error
         });
     }
@@ -89,10 +89,10 @@ bookRoutes.put('/:bookId', async (req: Request, res: Response) => {
             message: 'Book updated successfully',
             data: books
         });
-    } catch (error) {
+    } catch (error: any) {
         res.status(500).json({
             success: false,
-            message: 'Something went wrong',
+            message: error.message,
             error
         });
     }
@@ -101,16 +101,16 @@ bookRoutes.put('/:bookId', async (req: Request, res: Response) => {
 bookRoutes.delete('/:bookId', async (req: Request, res: Response) => {
     try {
         const id = req.params.bookId;
-        const books = await Book.findByIdAndDelete(id)
+        const books = await Book.findOneAndDelete({ _id: id })
         res.status(200).json({
             success: true,
             message: 'Book deleted successfully',
             data: null
         });
-    } catch (error) {
+    } catch (error: any) {
         res.status(500).json({
             success: false,
-            message: 'Something went wrong',
+            message: error.message,
             error
         });
     }

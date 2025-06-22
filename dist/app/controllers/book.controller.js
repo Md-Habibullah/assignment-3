@@ -28,7 +28,7 @@ exports.bookRoutes.post('/', (req, res) => __awaiter(void 0, void 0, void 0, fun
     catch (error) {
         res.status(400).json({
             success: false,
-            message: 'somthing went wrong',
+            message: error.message,
             error
         });
     }
@@ -60,7 +60,7 @@ exports.bookRoutes.get('/', (req, res) => __awaiter(void 0, void 0, void 0, func
     catch (error) {
         res.status(500).json({
             success: false,
-            message: 'Something went wrong',
+            message: error.message,
             error
         });
     }
@@ -76,9 +76,9 @@ exports.bookRoutes.get('/:bookId', (req, res) => __awaiter(void 0, void 0, void 
         });
     }
     catch (error) {
-        res.status(500).json({
+        res.status(400).json({
             success: false,
-            message: 'Something went wrong',
+            message: error.message,
             error
         });
     }
@@ -97,7 +97,7 @@ exports.bookRoutes.put('/:bookId', (req, res) => __awaiter(void 0, void 0, void 
     catch (error) {
         res.status(500).json({
             success: false,
-            message: 'Something went wrong',
+            message: error.message,
             error
         });
     }
@@ -105,7 +105,7 @@ exports.bookRoutes.put('/:bookId', (req, res) => __awaiter(void 0, void 0, void 
 exports.bookRoutes.delete('/:bookId', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = req.params.bookId;
-        const books = yield book_model_1.default.findByIdAndDelete(id);
+        const books = yield book_model_1.default.findOneAndDelete({ _id: id });
         res.status(200).json({
             success: true,
             message: 'Book deleted successfully',
@@ -115,7 +115,7 @@ exports.bookRoutes.delete('/:bookId', (req, res) => __awaiter(void 0, void 0, vo
     catch (error) {
         res.status(500).json({
             success: false,
-            message: 'Something went wrong',
+            message: error.message,
             error
         });
     }

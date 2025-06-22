@@ -34,10 +34,10 @@ borrowRoutes.post('/', async (req: Request, res: Response) => {
             message: 'Book borrowed successfully',
             data: borrow
         });
-    } catch (error) {
+    } catch (error: any) {
         res.status(400).json({
             success: false,
-            message: 'somthing went wrong',
+            message: error.message,
             error
         });
     }
@@ -47,7 +47,7 @@ borrowRoutes.get('/', async (req: Request, res: Response) => {
     try {
         const summary = await Borrow.aggregate([
             {
-                $group: { _id: '$book', totalBookCount: { $sum: '$quantity' } }
+                $group: { _id: '$book', totalQuantity: { $sum: '$quantity' } }
             },
 
             {
@@ -70,21 +70,20 @@ borrowRoutes.get('/', async (req: Request, res: Response) => {
                         title: '$bookInfo.title',
                         isbn: '$bookInfo.isbn'
                     },
-                    totalBookCount: 1
+                    totalQuantity: 1
                 }
             }
         ])
-        console.log(summary)
 
         res.status(200).json({
             success: true,
             message: 'borrowed books summary retreved successfully',
             data: summary
         });
-    } catch (error) {
+    } catch (error: any) {
         res.status(400).json({
             success: false,
-            message: 'somthing went wrong',
+            message: error.message,
             error
         });
     }

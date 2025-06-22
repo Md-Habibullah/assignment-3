@@ -19,14 +19,11 @@ const borrowSchema = new Schema<IBorrow>({
 });
 
 borrowSchema.pre('save', function (next) {
-    console.log(`Borrowing ${this.quantity} books for Book ID: ${this.book}`)
+    if (this.dueDate < new Date()) {
+        return next(new Error('dueDate cannot be in the past'))
+    }
     next()
 })
-
-borrowSchema.post('save', function (data, next) {
-    console.log(`Borrow record saved for book ID: ${data.book}`)
-    next()
-});
 
 const Borrow = model<IBorrow>('Borrow', borrowSchema);
 

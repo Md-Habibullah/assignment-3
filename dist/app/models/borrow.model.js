@@ -18,11 +18,9 @@ const borrowSchema = new mongoose_1.Schema({
     versionKey: false
 });
 borrowSchema.pre('save', function (next) {
-    console.log(`Borrowing ${this.quantity} books for Book ID: ${this.book}`);
-    next();
-});
-borrowSchema.post('save', function (data, next) {
-    console.log(`Borrow record saved for book ID: ${data.book}`);
+    if (this.dueDate < new Date()) {
+        return next(new Error('dueDate cannot be in the past'));
+    }
     next();
 });
 const Borrow = (0, mongoose_1.model)('Borrow', borrowSchema);

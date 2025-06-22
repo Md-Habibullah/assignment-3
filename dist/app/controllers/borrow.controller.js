@@ -45,7 +45,7 @@ exports.borrowRoutes.post('/', (req, res) => __awaiter(void 0, void 0, void 0, f
     catch (error) {
         res.status(400).json({
             success: false,
-            message: 'somthing went wrong',
+            message: error.message,
             error
         });
     }
@@ -54,7 +54,7 @@ exports.borrowRoutes.get('/', (req, res) => __awaiter(void 0, void 0, void 0, fu
     try {
         const summary = yield borrow_model_1.default.aggregate([
             {
-                $group: { _id: '$book', totalBookCount: { $sum: '$quantity' } }
+                $group: { _id: '$book', totalQuantity: { $sum: '$quantity' } }
             },
             {
                 $lookup: {
@@ -69,15 +69,15 @@ exports.borrowRoutes.get('/', (req, res) => __awaiter(void 0, void 0, void 0, fu
             },
             {
                 $project: {
-                    totalQuantity: 1,
+                    _id: 0,
                     book: {
                         title: '$bookInfo.title',
                         isbn: '$bookInfo.isbn'
-                    }
+                    },
+                    totalQuantity: 1
                 }
             }
         ]);
-        console.log(summary);
         res.status(200).json({
             success: true,
             message: 'borrowed books summary retreved successfully',
@@ -87,7 +87,7 @@ exports.borrowRoutes.get('/', (req, res) => __awaiter(void 0, void 0, void 0, fu
     catch (error) {
         res.status(400).json({
             success: false,
-            message: 'somthing went wrong',
+            message: error.message,
             error
         });
     }
