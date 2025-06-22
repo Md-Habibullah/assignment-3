@@ -17,11 +17,13 @@ const borrow_model_1 = __importDefault(require("./borrow.model"));
 const bookSchema = new mongoose_1.Schema({
     title: {
         type: String,
-        required: [true, 'Book title is required']
+        required: [true, 'Book title is required'],
+        trim: true
     },
     author: {
         type: String,
-        required: [true, 'Author name is required']
+        required: [true, 'Author name is required'],
+        trim: true
     },
     genre: {
         type: String,
