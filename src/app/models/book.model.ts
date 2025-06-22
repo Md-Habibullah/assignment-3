@@ -5,11 +5,13 @@ import Borrow from "./borrow.model";
 const bookSchema = new Schema<IBook, bookStaticMethod>({
     title: {
         type: String,
-        required: [true, 'Book title is required']
+        required: [true, 'Book title is required'],
+        trim: true
     },
     author: {
         type: String,
-        required: [true, 'Author name is required']
+        required: [true, 'Author name is required'],
+        trim: true
     },
     genre: {
         type: String,
@@ -50,7 +52,7 @@ bookSchema.post('findOneAndDelete', async function (doc) {
         await Borrow.deleteMany({ book: doc._id })
         console.log(`Deleted all borrows for book ${doc.title}`)
     }
-})
+});
 
 const Book = model<IBook, bookStaticMethod>('Book', bookSchema);
 
