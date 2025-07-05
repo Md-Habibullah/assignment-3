@@ -35,33 +35,41 @@ exports.bookRoutes.post('/', (req, res) => __awaiter(void 0, void 0, void 0, fun
 }));
 exports.bookRoutes.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { filter, sortBy, sort = 'asc', limit = '10' } = req.query;
-        // Validate sortBy
-        const sortByString = typeof sortBy === 'string' ? sortBy : 'createdAt';
+        const { filter, sortBy = 'createdAt', sort = 'asc', page = '1', limit = '10', } = req.query;
+        const sortField = typeof sortBy === 'string' ? sortBy : 'createdAt';
+        const sortOrder = sort === 'desc' ? -1 : 1;
+        const pageNumber = parseInt(page.toString()) || 1;
+        const limitNumber = parseInt(limit.toString()) || 10;
+        const skip = (pageNumber - 1) * limitNumber;
         // Build query
         const query = {};
         if (filter) {
             query.genre = filter.toString().toUpperCase();
         }
-        console.log(query);
-        // Build sort option
-        const sortOption = {};
-        sortOption[sortByString] = sort === 'desc' ? -1 : 1;
-        // Fetch books
+        // Total count for pagination
+        const totalBooks = yield book_model_1.default.countDocuments(query);
+        // Fetch paginated + sorted books
         const books = yield book_model_1.default.find(query)
-            .sort(sortOption)
-            .limit(parseInt(limit.toString()));
+            .sort({ [sortField]: sortOrder })
+            .skip(skip)
+            .limit(limitNumber);
         res.status(200).json({
             success: true,
             message: 'Books retrieved successfully',
-            data: books
+            data: books,
+            meta: {
+                total: totalBooks,
+                page: pageNumber,
+                limit: limitNumber,
+                totalPages: Math.ceil(totalBooks / limitNumber),
+            },
         });
     }
     catch (error) {
         res.status(500).json({
             success: false,
             message: error.message,
-            error
+            error,
         });
     }
 }));
